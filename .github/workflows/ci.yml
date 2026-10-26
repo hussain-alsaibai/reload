@@ -17,9 +17,11 @@ jobs:
       - run: npm test
       - run: npm run make-coverage
       - name: Upload coverage to Codecov
+        # Coverage reporting is best-effort: the repo has no CODECOV_TOKEN
+        # secret, and an upload failure must not fail an otherwise green build.
         uses: codecov/codecov-action@v5
+        continue-on-error: true
         with:
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           verbose: true
           files: ./coverage.lcov
-          token: ${{ secrets.CODECOV_TOKEN }}
